@@ -1,0 +1,124 @@
+package com.cmi.business;
+import com.cmi.Modle.ApiAction;
+import com.cmi.Modle.ErrorHandleAction;
+import com.cmi.Modle.PreProcessAction;
+import com.cmi.listObject.MagListBean;
+import com.cmi.log.LogWriter;
+import com.cmi.tools.DBUtil;
+import com.cmi.tools.DataParse;
+import org.testng.Assert;
+import org.testng.Reporter;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.List;
+
+public class RunBatch {
+
+    @Parameters({"address","runTimes","dbIp"})
+    @Test
+    public void excute(@Optional("54.223.53.238:7001") String address, @Optional("2") String runTimes,@Optional("54.222.178.49") String dbAddress) throws Exception{
+        System.out.println(address);
+        System.out.println(runTimes);
+        System.out.println(dbAddress);
+        Boolean flag=true;  // 运行标志位
+        String runStatus="";
+        int runtime =Integer.parseInt(runTimes);   // 执行次数
+        for(int i=1;i<=runtime;i++){
+
+            LogWriter.info(RunBatch.class,"---------------------------------执行第"+i+"次跑批-----------------------------------");
+
+            // 调用预处理功能
+             Assert.assertTrue(new PreProcessAction().preProcess(dbAddress));
+
+             ApiAction apiAction = new ApiAction(address);
+
+             String session="";
+              String getSession=  apiAction.login(DataParse.GetProperties("USER"),DataParse.GetProperties("PASSWORD1"));
+             // 登陆失败
+              if (getSession==null|getSession.equals("fail")){
+
+              }else{
+                  // 登陆成功
+                  session=getSession;
+              }
+
+               runStatus =apiAction.checkRunStatus(session); // 获取运行状态
+
+               if(runStatus.equals("未运行")){
+                   String checkSBatchCreate =apiAction.checkBatchCreated(session);
+                   if(checkSBatchCreate.equals("Y")){   // 验证批次生成 未生成任务      // 生成任务状态为created
+
+                       String createBatch=apiAction.createBatch(session); // 生成批次
+                       if (!createBatch.equals("true")){   // 验证批次生成是否成功
+                           flag=false;
+                           LogWriter.error(RunBatch.class,"批次生成失败");
+                           Assert.assertTrue(flag);
+
+                       }
+                   }
+
+               }else if(runStatus.equals("正在运行")){
+                   flag=false;
+                   LogWriter.error(RunBatch.class,"仍有批次正在运行，请检查批次任务稍后再试");
+
+                   Assert.assertTrue(flag);
+               }
+
+               String rundate= new ApiAction(address).magList(session).get(1).getPrcs_dt();
+               LogWriter.info(RunBatch.class,"执行批次日期:【"+rundate+"】");
+
+
+              //执行跑批任务
+            try {
+                String runBatch = apiAction.runBatch(session);
+
+                if(runBatch.equals("true")){  // 跑批成功
+                    LogWriter.info(RunBatch.class,"跑批成功");
+                    //获取信贷处理结果
+                }else if(runBatch.equals("false")){  // 跑批失败
+                    //获取信贷处理结果
+
+                    ErrorHandleAction errorHandle = new ErrorHandleAction(address);
+                    String errorNo = errorHandle.getMagErrorProcess(session);  // 获取失败任务序号
+                    LogWriter.error(RunBatch.class,"跑批失败 出错任务号："+errorNo+"  出错处理中...");
+                    errorHandle.fixMagError(errorNo,session,dbAddress);  // 处理失败任务
+
+
+                    //调用异常处理
+
+                    // 重跑
+                  String rerun=  apiAction.runBatch(session);
+
+                    if(rerun.equals("true")){  // 跑批成功
+                        //获取信贷处理结果
+                    }else {
+                        LogWriter.error(RunBatch.class,"跑批失败请检查跑批结果或日志");
+                        LogWriter.info(RunBatch.class,"执行批次日期"+rundate);
+                        LogWriter.info(RunBatch.class,"执行批次"+i+"日失败,已执行成功"+(i-1)+"次");
+                        LogWriter.info(RunBatch.class,"---------------------------------结束第"+i+"次跑批-----------------------------------");
+                        Assert.assertTrue(false);
+                    }
+                }
+
+
+
+            }catch (Exception e){
+                LogWriter.error(RunBatch.class,"启动跑批失败 请检查原因");
+                e.printStackTrace();
+                Assert.assertTrue(false);
+            }
+               // 监控结果
+            LogWriter.info(RunBatch.class,"---------------------------------结束第"+i+"次跑批-----------------------------------");
+            if((runtime-i)!=0){
+                LogWriter.info(RunBatch.class,"等待12Min 准备执行下一批次....");
+                Thread.sleep(1000*60*12);  // 跑批成功 等待12分钟  执行下一批次
+            }
+
+        }
+
+    }
+
+}

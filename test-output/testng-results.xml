@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="1" passed="1">
+  <reporter-output>
+    <line>
+      <![CDATA[信贷地址：54.223.53.238:7001]]>
+    </line>
+    <line>
+      <![CDATA[跑批次数：1]]>
+    </line>
+    <line>
+      <![CDATA[数据库地址：54.222.178.49]]>
+    </line>
+    <line>
+      <![CDATA[---------------------------------执行第1次跑批-----------------------------------]]>
+    </line>
+    <line>
+      <![CDATA[----执行时间2019-04-09 11:26:31----]]>
+    </line>
+    <line>
+      <![CDATA[***调用预处理功能***]]>
+    </line>
+    <line>
+      <![CDATA[***调用预处理功能结束***]]>
+    </line>
+    <line>
+      <![CDATA[***调用接口获取session***]]>
+    </line>
+    <line>
+      <![CDATA[***获取批次运行状态***]]>
+    </line>
+    <line>
+      <![CDATA[***批次状态未运行***]]>
+    </line>
+    <line>
+      <![CDATA[***校验批次任务生成状态***]]>
+    </line>
+    <line>
+      <![CDATA[***批次任务未生成，生成批次***]]>
+    </line>
+    <line>
+      <![CDATA[执行批次日期:【2021-02-08】]]>
+    </line>
+    <line>
+      <![CDATA[***执行批次任务***]]>
+    </line>
+    <line>
+      <![CDATA[***跑批成功***]]>
+    </line>
+    <line>
+      <![CDATA[----执行结束时间2019-04-09 11:28:45----]]>
+    </line>
+    <line>
+      <![CDATA[---------------------------------结束第1次跑批-----------------------------------]]>
+    </line>
+  </reporter-output>
+  <suite name="Default Suite" duration-ms="133830" started-at="2019-04-09T03:26:31Z" finished-at="2019-04-09T03:28:45Z">
+    <groups>
+    </groups>
+    <test name="batchAutoRun" duration-ms="133830" started-at="2019-04-09T03:26:31Z" finished-at="2019-04-09T03:28:45Z">
+      <class name="com.cmi.business.RunBatch">
+        <test-method status="PASS" signature="excute(java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.cmi.business.RunBatch@2b80d80f]" name="excute" duration-ms="133816" started-at="2019-04-09T11:26:31Z" finished-at="2019-04-09T11:28:45Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[54.223.53.238:7001]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[54.222.178.49]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+            <line>
+              <![CDATA[信贷地址：54.223.53.238:7001]]>
+            </line>
+            <line>
+              <![CDATA[跑批次数：1]]>
+            </line>
+            <line>
+              <![CDATA[数据库地址：54.222.178.49]]>
+            </line>
+            <line>
+              <![CDATA[---------------------------------执行第1次跑批-----------------------------------]]>
+            </line>
+            <line>
+              <![CDATA[----执行时间2019-04-09 11:26:31----]]>
+            </line>
+            <line>
+              <![CDATA[***调用预处理功能***]]>
+            </line>
+            <line>
+              <![CDATA[***调用预处理功能结束***]]>
+            </line>
+            <line>
+              <![CDATA[***调用接口获取session***]]>
+            </line>
+            <line>
+              <![CDATA[***获取批次运行状态***]]>
+            </line>
+            <line>
+              <![CDATA[***批次状态未运行***]]>
+            </line>
+            <line>
+              <![CDATA[***校验批次任务生成状态***]]>
+            </line>
+            <line>
+              <![CDATA[***批次任务未生成，生成批次***]]>
+            </line>
+            <line>
+              <![CDATA[执行批次日期:【2021-02-08】]]>
+            </line>
+            <line>
+              <![CDATA[***执行批次任务***]]>
+            </line>
+            <line>
+              <![CDATA[***跑批成功***]]>
+            </line>
+            <line>
+              <![CDATA[----执行结束时间2019-04-09 11:28:45----]]>
+            </line>
+            <line>
+              <![CDATA[---------------------------------结束第1次跑批-----------------------------------]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- excute -->
+      </class> <!-- com.cmi.business.RunBatch -->
+    </test> <!-- batchAutoRun -->
+  </suite> <!-- Default Suite -->
+</testng-results>

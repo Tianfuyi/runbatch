@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<suite name="testSuite1">
+
+    <parameter name="address" value="${address}" />
+    <parameter name="runTimes" value="${runTimes}" />
+    <parameter name="dbIp" value="${dbIp}" />
+    <test name="UITest1">
+
+        <classes>
+            <class name="com.cmi.business.RunBatch" />
+        </classes>
+
+    </test>
+
+</suite>

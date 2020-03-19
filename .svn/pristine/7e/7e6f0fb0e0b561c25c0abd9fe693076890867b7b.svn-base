@@ -1,0 +1,176 @@
+package com.cmi.Modle;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.cmi.listObject.LogListBean;
+import com.cmi.listObject.MagListBean;
+import com.cmi.tools.JsonUtil;
+import com.cmi.log.LogWriter;
+import com.cmi.tools.RequestClient;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 接口模块功能封装
+ */
+public class ApiAction {
+
+    private  String address;
+    public ApiAction(String _address){
+       address=_address;
+    }
+
+    public  String login(String name,String pwd){
+        RequestClient rc = new RequestClient();
+        String session =rc.login(address,"admin","4C590C75BD7D9836E1C960AE0ED2FE7C");
+        return session;
+    }
+
+
+    // 查询批次是否生成   created
+    public  String checkBatchCreated(String session){
+        RequestClient rc = new RequestClient();
+       String status = rc.requestByPost("http://"+address+"/cmis/checkBeforeCreateJob.do?EMP_SID="+session);
+        JsonUtil json= new JsonUtil();
+        Map m= json.jsonToMaps(status);
+        String result=m.get("checkResult").toString();
+       return result;
+
+    }
+
+    public  String checkRunStatus(String session){
+
+        try {
+            RequestClient rc = new RequestClient();
+     //       String session = rc.login("54.223.53.238:7001", "admin", "4C590C75BD7D9836E1C960AE0ED2FE7C");
+            String response = rc.requestByPost("http://"+address+"/cmis/queryDeprocMagList.do?EMP_SID=" + session ); //   信贷批次查询 Mag
+
+            Map map = new JsonUtil().jsonToMaps(response);
+            String runState = map.get("runState").toString();
+            LogWriter.error(ApiAction.class,"调用接口获取批处理状态为:"+runState);
+
+            return runState;
+        }catch (Exception e){
+            e.printStackTrace();
+            LogWriter.error(ApiAction.class,"调用接口获取批处理运行状态失败");
+            return null;
+        }
+    }
+
+
+    // 生成批次  retFlag:true or ""
+    public  String createBatch(String session){
+        LogWriter.error(ApiAction.class,"开始生成批次");
+        RequestClient rc = new RequestClient();
+        String response =rc.requestByPost("http://"+address+"/cmis/createBatchJobPerDay.do?EMP_SID="+session);
+        JsonUtil json= new JsonUtil();
+        Map m= json.jsonToMaps(response);
+        String result=m.get("retFlag").toString();
+
+        return result;
+
+    }
+
+    /** 执行跑批
+     * @param session
+     * @return  执行结果标志位
+     */
+
+    public  String runBatch(String session){
+        LogWriter.info(ApiAction.class,"开始运行批次");
+        RequestClient rc = new RequestClient();
+
+        String response =rc.requestByPost("http://"+address+"/cmis/doBatchJob.do?EMP_SID="+session);
+        JsonUtil json= new JsonUtil();
+        Map m= json.jsonToMaps(response);
+        String result=m.get("flag").toString();
+
+        return result;
+    }
+
+
+    // 信贷list
+    public  List<MagListBean>  magList(String session){
+        RequestClient rc = new RequestClient();
+        String response =rc.requestByPost("http://"+address+"/cmis/queryDeprocMagList.do?EMP_SID="+session);
+
+        Map map= new JsonUtil().jsonToMaps(response);
+        String result=map.get("rows").toString();
+        MagListBean mag = new MagListBean();
+
+        List<MagListBean> listBeans = JSON.parseArray(result, MagListBean.class);
+        return listBeans;
+    }
+
+    // 核算list
+    public  List<LogListBean> logList(String session){
+        RequestClient rc = new RequestClient();
+        String response =rc.requestByPost("http://"+address+"/cmis/queryDeprocLogList.do?EMP_SID="+session);
+
+        Map map= new JsonUtil().jsonToMaps(response);
+        String result=map.get("rows").toString();
+        LogListBean mag = new LogListBean();
+
+        List<LogListBean> listBeans = JSON.parseArray(result, LogListBean.class);
+        return listBeans;
+    }
+
+
+    /** 批次日期
+     * @param session
+     * @return
+     */
+    public String getRunBatchDate(String session){
+        RequestClient rc = new RequestClient();
+        String response=rc.requestByPost("http://"+address+"/cmis/getCurDay.do?EMP_SID="+session);
+        JsonUtil json= new JsonUtil();
+        Map m= json.jsonToMaps(response);
+        String result=m.get("curDay").toString();
+
+        return result;
+    }
+
+
+
+
+
+
+
+
+    public static void main(String[] args) {
+
+    ApiAction ac = new ApiAction("54.223.53.238:7001");
+   // String str =ac.magList("GCGTDEFYBYDAIPHXBPALGSGYDTENCLECIFAOCQJD");
+    //    System.out.println("xxxxxxxxxxx"+str);
+//        JsonUtil json= new JsonUtil();
+//        Map map= json.jsonToMaps(str);
+//        String result=map.get("rows").toString();
+    //    System.out.println(result);
+
+//        MagListBean mag = new MagListBean();
+
+//        List<MagListBean> listBeans = JSON.parseArray(result, MagListBean.class);
+   /*     for(MagList bean : listBeans){
+            System.out.println(bean.getJob_nam());
+      //      System.out.println(bean.getId());
+         //  /System.out.println(bean.getJob_nam());
+//        }*/
+//        System.out.println(listBeans.get(1).getJob_nam());
+//        System.out.println(listBeans.get(0).getJob_nam());
+       List<MagListBean> list = ac.magList("CTAWIBGIAUCPDLDVDFJFEFJOEUAZCYDSGVGTAKJT");
+
+        System.out.println(list.get(1).getPrcs_dt()); //批处理日期
+        System.out.println(list.get(1).getSeq_no());                       //序号   100
+        System.out.println(list.get(1).getJob_sts());
+
+        System.out.println(list.get(0).getPrcs_dt()); //批处理日期
+        System.out.println(list.get(0).getSeq_no());                       //序号   100
+        System.out.println(list.get(0).getJob_sts());
+
+
+
+    }
+
+
+}

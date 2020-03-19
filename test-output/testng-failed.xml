@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Default Suite]">
+  <test name="batchAutoRun(failed)">
+    <classes>
+      <class name="com.cmi.business.RunBatch">
+        <methods>
+          <include name="excute" invocation-numbers="0"/>
+        </methods>
+      </class> <!-- com.cmi.business.RunBatch -->
+    </classes>
+  </test> <!-- batchAutoRun(failed) -->
+</suite> <!-- Failed suite [Default Suite] -->

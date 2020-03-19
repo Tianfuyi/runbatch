@@ -1,0 +1,107 @@
+<html>
+<head>
+<title>TestNG:  batchAutoRun</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>batchAutoRun</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>1/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Tue Apr 09 11:26:31 CST 2019</td>
+</tr>
+<tr><td>Total time:</td><td>133 seconds (133830 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='com.cmi.business.RunBatch.excute()'><b>excute</b><br>Test class: com.cmi.business.RunBatch<br>Parameters: 54.223.53.238:7001, 1, 54.222.178.49<br/>
+<a href="#Output-1360767589" onClick='toggleBox("Output-1360767589", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-1360767589" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-1360767589">
+信贷地址：54.223.53.238:7001<br/>
+跑批次数：1<br/>
+数据库地址：54.222.178.49<br/>
+---------------------------------执行第1次跑批-----------------------------------<br/>
+----执行时间2019-04-09 11:26:31----<br/>
+***调用预处理功能***<br/>
+***调用预处理功能结束***<br/>
+***调用接口获取session***<br/>
+***获取批次运行状态***<br/>
+***批次状态未运行***<br/>
+***校验批次任务生成状态***<br/>
+***批次任务未生成，生成批次***<br/>
+执行批次日期:【2021-02-08】<br/>
+***执行批次任务***<br/>
+***跑批成功***<br/>
+----执行结束时间2019-04-09 11:28:45----<br/>
+---------------------------------结束第1次跑批-----------------------------------<br/>
+</div>
+</td>
+<td></td>
+<td>133</td>
+<td>com.cmi.business.RunBatch@2b80d80f</td></tr>
+</table><p>
+</body>
+</html>
